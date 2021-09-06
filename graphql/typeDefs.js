@@ -3,9 +3,13 @@ const gql = require('graphql-tag')
 module.exports = gql`
     type Post {
         id: ID!
-        body: String!
+        content: String!
         username: String!
         creationDate: String!
+        comments: [Comment]!
+        likes: [Like]!
+        likesCount: Int!
+        commentsCount: Int!
     }
 
     type User {
@@ -16,9 +20,17 @@ module.exports = gql`
         creationDate: String!
     }
 
-    type Dick {
-        email: String!
+    type Comment {
+        id: ID!
+        content: String!
         username: String!
+        creationDate: String!
+    }
+
+    type Like {
+        id: ID!
+        username: String!
+        creationDate: String!
     }
 
     input RegisterInput {
@@ -34,12 +46,18 @@ module.exports = gql`
     }
 
     type Query {
-        getPost: [Post]
-        getPartialInfo: [Dick]
+        getPosts: [Post]
+        getPost(postId: ID!): Post
+        getUsers: [User]
     }
 
     type Mutation {
         register(registerInput: RegisterInput): User!
         login(loginInput: LoginInput): User!
+        createPost(content: String!): Post!
+        removePost(postId: ID!): String!
+        createComment(postId: ID!, content: String!): Post!
+        removeComment(postId: ID!, commentId: ID!): Post!
+        toggleLike(postId: ID!): Post!
     }
 `

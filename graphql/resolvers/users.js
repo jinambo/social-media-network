@@ -3,8 +3,7 @@ const jwt = require('jsonwebtoken')
 const { UserInputError } = require('apollo-server')
 
 const { SECRET_KEY } = require('../../config')
-const { registerValidate } = require('../../util/validate')
-const { loginValidate } = require('../../util/validate')
+const { registerValidate, loginValidate } = require('../../util/validate')
 const User = require('../../models/User')
 
 const createToken = user => {
@@ -15,10 +14,10 @@ const createToken = user => {
     }, SECRET_KEY, { expiresIn: '1h' })
 }
 
-const getDick = async () => {
+const getUsers= async () => {
     try {
         const users = await User.find()
-        return usrs
+        return users
     } catch(err) {
         throw new Error(err)
     }
@@ -26,7 +25,7 @@ const getDick = async () => {
 
 module.exports = {
     Query: {
-        getDick
+        getUsers,
     },
     Mutation: {
         async register(_, { registerInput: { username, email, password, confirmPassword } }) {
