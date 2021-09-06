@@ -16,6 +16,11 @@ module.exports = gql`
         creationDate: String!
     }
 
+    type Dick {
+        email: String!
+        username: String!
+    }
+
     input RegisterInput {
         username: String!
         email: String!
@@ -30,6 +35,7 @@ module.exports = gql`
 
     type Query {
         getPost: [Post]
+        getPartialInfo: [Dick]
     }
 
     type Mutation {

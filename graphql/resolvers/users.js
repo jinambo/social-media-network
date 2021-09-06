@@ -15,7 +15,19 @@ const createToken = user => {
     }, SECRET_KEY, { expiresIn: '1h' })
 }
 
+const getDick = async () => {
+    try {
+        const users = await User.find()
+        return usrs
+    } catch(err) {
+        throw new Error(err)
+    }
+}
+
 module.exports = {
+    Query: {
+        getDick
+    },
     Mutation: {
         async register(_, { registerInput: { username, email, password, confirmPassword } }) {
             // Validate data
