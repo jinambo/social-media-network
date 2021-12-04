@@ -11,6 +11,7 @@ const resolvers = require('./graphql/resolvers')
 const server = new ApolloServer({
     typeDefs: typeDefs,
     resolvers: resolvers,
+    introspection: true,
     context: ({ req }) => ({ req })
 })
 
@@ -22,3 +23,4 @@ mongoose.connect(MONGODB, {
 }).then(res => {
     console.log(`Server running at ${res.url}`)
 })
+

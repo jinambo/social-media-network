@@ -1,0 +1,14 @@
+.register {
+    height: 100%;
+    padding: 1em;
+
+    &__inner {
+        height: 100%;
+        flex-direction: column;
+    }
+
+    &__card {
+        width: 100%;
+        margin: 0;
+    }
+}

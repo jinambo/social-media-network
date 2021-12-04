@@ -1,0 +1,75 @@
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-button (click)="close()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>Comments</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="comment">
+  <ion-grid>
+
+    <ion-row>
+      <ion-col>
+        <li *ngFor="let comment of comments">
+          <ion-item-sliding *ngIf="currentUser == comment.username">
+            <ion-item-options side="end">
+              <ion-item-option
+                color="danger"
+                expandable
+                (click)="removeComment(postID, comment.id)"
+              >
+                Delete
+              </ion-item-option>
+            </ion-item-options>
+        
+            <ion-item class="transparent">
+              <div class="comment__item">
+                <div class="comment__profile">
+                  <ion-icon class="comment__pic" name="person"></ion-icon>
+                  <div class="comment__author">
+                    {{ comment.username }}
+                  </div>
+                </div>
+      
+                <div class="comment__content">
+                  {{ comment.content }}
+                </div>
+              </div>
+            </ion-item>
+          </ion-item-sliding>
+
+          <div *ngIf="currentUser != comment.username" class="comment__item">
+            <div class="comment__profile">
+              <ion-icon class="comment__pic" name="person"></ion-icon>
+              <div class="comment__author">
+                {{ comment.username }}
+              </div>
+            </div>
+
+            <div class="comment__content">
+              {{ comment.content }}
+            </div>
+          </div>
+        </li>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <div class="comment__add">
+    <ion-item class="comment__input">
+      <ion-label position="floating">Comment</ion-label>
+      <ion-textarea [(ngModel)]="newComment"></ion-textarea>
+    </ion-item>
+    <ion-button
+      *ngIf="newComment != ''"
+      class="comment__btn"
+      (click)="createComment(postID)"
+      color="dark"
+    >Post</ion-button>
+  </div>
+</ion-content>

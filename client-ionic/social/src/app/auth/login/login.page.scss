@@ -1,0 +1,26 @@
+.login {
+    height: 100%;
+    padding: 1em;
+
+    &__inner {
+        position: relative;
+        height: 100%;
+        flex-direction: column;
+    }
+
+    &__card {
+        width: 100%;
+        margin: 0;
+    }
+}
+
+.error-message {
+    padding: 1em;
+    margin: 2em 0;
+    border-radius: 6px;
+    box-shadow: 0 2px 9px rgba(48, 11, 11, 0.33);
+    background-color: #cc4a4a;
+    color: #fff;
+    font-weight: bold;
+    animation: scale-out-vertical 0.5s 3.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+}
