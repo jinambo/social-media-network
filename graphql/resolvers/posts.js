@@ -21,6 +21,19 @@ const getPost = async (_, { postId }) => {
     }  
 }
 
+const getUsersPosts = async(_, { username }) => {
+    try {
+        const posts = await Post.find()
+
+        if (posts) {
+            return posts.filter(post => post.username === username);
+        }
+        
+    } catch(err) {
+        throw new Error(err)
+    }   
+}
+
 const createPost = async (_, { content }, context) => {
     const user = checkAuth(context)
 
@@ -126,7 +139,8 @@ const toggleLike = async (_, { postId }, context) => {
 module.exports = {
     Query: {
         getPosts,
-        getPost
+        getPost,
+        getUsersPosts
     },
     Mutation: {
         createPost,

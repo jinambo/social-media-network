@@ -1,0 +1,49 @@
+<app-header [title]="userData.username"></app-header>
+
+<ion-content [fullscreen]="true">
+
+  <ion-card>
+    <ion-card-header class="profile">
+      <ion-icon name="person"></ion-icon>
+      <ion-toolbar class="ion-margin-start">
+        <ion-card-subtitle>{{ userData.username }}</ion-card-subtitle>
+      </ion-toolbar>
+    </ion-card-header>
+
+    <ion-card-content>
+      <p>{{ userData.biography }}</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-grid class="ion-margin">
+    <ion-row>
+      <p>Users you may know</p>
+    </ion-row>
+    <ion-row>
+      <div class="user__slider">
+        <div class="user__scroll">
+
+          <a (click)="showProfile(user.username)" class="user__item" *ngFor="let user of users">
+            <h3 class="user__name">{{ user.username }}</h3>
+            <p class="user__description">{{ user.biography }}</p>
+          </a>
+
+        </div>
+      </div>
+    </ion-row>
+  </ion-grid>
+
+
+  <app-card *ngFor="let post of userPosts"
+    [posts]="userPosts"
+    [username]="post.username"
+    [postId]="post.id"
+    [postCreationDate]="post.creationDate"
+    [postContent]="post.content"
+    [postLikes]="post.likes"
+    [postLikesCount]="post.likesCount"
+    [postComments]="post.comments"
+    [postCommentsCount]="post.commentsCount"
+  ></app-card>
+
+</ion-content>

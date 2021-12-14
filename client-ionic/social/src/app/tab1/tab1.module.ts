@@ -6,6 +6,9 @@ import { Tab1Page } from './tab1.page';
 import { ExploreContainerComponentModule } from '../explore-container/explore-container.module';
 
 import { Tab1PageRoutingModule } from './tab1-routing.module';
+import { HeaderModule } from '../components/container/header/header.module';
+import { LikeModule } from '../components/post/like/like.module';
+import { CardModule } from '../components/post/card/card.module';
 
 @NgModule({
   imports: [
@@ -13,7 +16,10 @@ import { Tab1PageRoutingModule } from './tab1-routing.module';
     CommonModule,
     FormsModule,
     ExploreContainerComponentModule,
-    Tab1PageRoutingModule
+    Tab1PageRoutingModule,
+    HeaderModule,
+    LikeModule,
+    CardModule
   ],
   declarations: [Tab1Page]
 })

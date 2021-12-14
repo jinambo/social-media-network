@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/services/auth.service';
 
 // Models
 import { Comment } from 'src/app/services/post.service';
+import { USER_NAME } from 'src/app/consts';
 
 @Component({
   selector: 'app-comments',
@@ -29,7 +30,7 @@ export class CommentsPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.currentUser = this.authService.username
+    this.currentUser = localStorage.getItem(USER_NAME)
   }
 
   async close() {

@@ -14,7 +14,7 @@ const createToken = user => {
     }, SECRET_KEY, { expiresIn: '1h' })
 }
 
-const getUsers= async () => {
+const getUsers = async () => {
     try {
         const users = await User.find()
         return users
@@ -23,12 +23,33 @@ const getUsers= async () => {
     }
 }
 
+const getUsersIterate = async ( _, { first } ) => {
+    try {
+        const users = await User.find().limit(first)
+        return users
+    } catch(err) {
+        throw new Error(err)
+    }
+}
+
+const getUser = async (_, { username }) => {
+    try {
+        const user = await User.findOne({username: username})
+
+        return user
+    } catch(err) {
+        throw new Error(err)
+    }
+}
+
 module.exports = {
     Query: {
         getUsers,
+        getUsersIterate,
+        getUser
     },
     Mutation: {
-        async register(_, { registerInput: { username, email, password, confirmPassword } }) {
+        async register(_, { registerInput: { username, email, password, confirmPassword, biography } }) {
             // Validate data
             const { valid, errors } = registerValidate(username, email, password, confirmPassword)
 
@@ -53,6 +74,7 @@ module.exports = {
                 email,
                 username,
                 password,
+                biography,
                 creationDate: new Date().toISOString()
             })
 

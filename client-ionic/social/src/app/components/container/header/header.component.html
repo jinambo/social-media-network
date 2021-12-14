@@ -1,0 +1,19 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button>
+        <a [routerLink]="'/tabs/tab1'">
+          <img class="logo-icon" src="assets/icon/pie.png" alt="">
+        </a>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-tab-button class="person__button" tab="profile/{{username}}" style="background-color: transparent !important; color: #fff !important;">
+        <ion-icon class="person__icon" name="person"></ion-icon>
+      </ion-tab-button>
+    </ion-buttons>
+
+    <ion-title>{{ title }}</ion-title>
+  </ion-toolbar>
+</ion-header>

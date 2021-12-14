@@ -1,6 +1,6 @@
 <ion-list>
-  <ion-item detail="false" button>
+  <ion-item (click)="removePost()" detail="false" button>
     <ion-text color="danger">Remove post</ion-text>
   </ion-item>
-  <ion-item lines="none" detail="false" button>Close</ion-item>
+  <ion-item (click)="close()" lines="none" detail="false" button>Close</ion-item>
 </ion-list>

@@ -17,11 +17,38 @@ const POST_QUERY = gql`
         username
         content
       }
+      likes {
+        id
+        username
+      }
       likesCount
       commentsCount
     }
   }
 `;
+
+// Get user's posts
+const USERS_POSTS_QUERY = gql`
+  query usersPostsQuery($username: String!) {
+    getUsersPosts(username: $username) {
+      id
+      username
+      creationDate
+      content
+      comments {
+        id
+        username
+        content
+      }
+      likes {
+        id
+        username
+      }
+      likesCount
+      commentsCount
+    }
+  }
+`
 
 // Create Post Mutation
 const CREATE_POST_MUTATION = gql`
@@ -34,6 +61,12 @@ const CREATE_POST_MUTATION = gql`
       likesCount
       commentsCount
     }
+  }
+`
+// Remove Post Mutation
+const REMOVE_POST_MUTAION = gql`
+  mutation RemovePost($postId: ID!) {
+    removePost(postId: $postId)
   }
 `
 
@@ -83,6 +116,7 @@ export interface Post {
   creationDate: string;
   content: string;
   comments: Comment [];
+  likes: any [];
   likesCount: number;
   commentsCount: number;
 }
@@ -95,7 +129,6 @@ export interface PostResponse {
   providedIn: 'root'
 })
 export class PostService {
-
   constructor(
     private apollo: Apollo
   ) { }
@@ -107,11 +140,30 @@ export class PostService {
     .valueChanges
   }
 
+  getUsersPosts(username: String): Observable<any> {
+    return this.apollo.watchQuery<any>({
+      query: USERS_POSTS_QUERY,
+      variables: {
+        username: username
+      }
+    })
+    .valueChanges
+  }
+
   createPost(content): Observable<any> {
     return this.apollo.mutate({
       mutation: CREATE_POST_MUTATION,
       variables: {
         content: content
+      }
+    })
+  }
+
+  removePost(postID): Observable<any> {
+    return this.apollo.mutate({
+      mutation: REMOVE_POST_MUTAION,
+      variables: {
+        postId: postID
       }
     })
   }

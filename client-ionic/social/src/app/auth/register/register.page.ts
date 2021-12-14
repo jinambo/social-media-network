@@ -14,6 +14,7 @@ export class RegisterPage implements OnInit {
   email: String;
   password: String;
   confirmPassword: String;
+  biography: String;
 
   errorMessage: String;
   private router : Router;
@@ -25,7 +26,7 @@ export class RegisterPage implements OnInit {
   }
 
   registerUser() {
-    this.authService.registerUser(this.username, this.email, this.password, this.confirmPassword)
+    this.authService.registerUser(this.username, this.email, this.password, this.confirmPassword, this.biography)
     .subscribe(({ data }) => {
       console.log('got data', data);
       this.authService.userData = data;

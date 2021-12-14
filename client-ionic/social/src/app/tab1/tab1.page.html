@@ -1,55 +1,17 @@
-<ion-header [translucent]="true">
-  <ion-toolbar color="primary">
-    <ion-buttons slot="start">
-      <ion-button>
-        <img class="logo-icon" src="assets/icon/pie.png" alt="">
-      </ion-button>
-    </ion-buttons>
-    <ion-buttons slot="end">
-      <img class="user-image" src="assets/icon/profile-user.png" alt="">
-    </ion-buttons>
-
-    <ion-title>Feed</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-header [title]="'Feed'"></app-header>
 
 <ion-content [fullscreen]="true">
-    <ion-card class="post" *ngFor="let post of posts">
-      <!--<img src="https://ionicframework.com/docs/demos/api/card/madison.jpg" />-->
-      <ion-card-header>
-        <ion-toolbar>
-          <ion-card-subtitle>Post by <b>{{ post.username }}</b></ion-card-subtitle>
-          <ion-buttons slot="end">
-            <ion-button (click)="presentPopover($event)">
-              <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
-            </ion-button>
-          </ion-buttons>
-        </ion-toolbar>
-        <small>{{ handleDate(post.creationDate) }}</small>
-      </ion-card-header>
 
-      <ion-card-content>
-        {{ post.content }}
-
-        <div class="post__actions">
-          <div
-            class="post__likes"
-            (click)="toggleLike(post.id)"
-          >
-            <ion-icon name="heart-outline"></ion-icon>
-            <span>{{ post.likesCount }}</span>
-          </div>
-
-          <div
-            class="post__comments"
-            (click)="initCommentsModal('Post by ' + post.username, post.id, post.comments)"
-          >
-            <ion-icon name="chatbubbles-outline"></ion-icon>
-            <span>{{ post.commentsCount }}</span>
-          </div>
-          
-        </div>
-      </ion-card-content>
-    </ion-card>
+    <app-card *ngFor="let post of posts"
+      [posts]="posts"
+      [username]="post.username"
+      [postId]="post.id"
+      [postCreationDate]="post.creationDate"
+      [postContent]="post.content"
+      [postLikes]="post.likes"
+      [postLikesCount]="post.likesCount"
+      [postComments]="post.comments"
+      [postCommentsCount]="post.commentsCount"
+    ></app-card>
 
 </ion-content>

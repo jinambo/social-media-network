@@ -1,3 +1,4 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -27,8 +28,6 @@ export class LoginPage implements OnInit {
     this.authService.loginUser(this.username, this.password)
     .subscribe(({ data }) => {
       console.log('got data', data);
-      this.authService.userData = data;
-      this.authService.username = this.username;
       this.authService.saveUserData(data, "log");
 
       this.router.navigate(['/tabs', 'tab1']);

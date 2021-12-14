@@ -1,0 +1,34 @@
+<ion-card class="post">
+  <ion-card-header>
+    <ion-toolbar>
+      <ion-card-subtitle>
+        <a [routerLink]="['/tabs/profile', username]">
+          Post by <b>{{ username }}</b>
+        </a>
+      </ion-card-subtitle>
+      <ion-buttons slot="end">
+        <ion-button (click)="presentPopover($event, postId)">
+          <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+    <small>{{ handleDate(postCreationDate) }}</small>
+  </ion-card-header>
+
+  <ion-card-content>
+    {{ postContent }}
+
+    <div class="post__actions">
+      <app-like [postID]="postId" [likes]="postLikes" [likesCount]="postLikesCount"></app-like>
+
+      <div
+        class="post__comments"
+        (click)="initCommentsModal('Post by ' + username, postId, postComments)"
+      >
+        <ion-icon name="chatbubbles-outline"></ion-icon>
+        <span>{{ postCommentsCount }}</span>
+      </div>
+      
+    </div>
+  </ion-card-content>
+</ion-card>

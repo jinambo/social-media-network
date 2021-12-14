@@ -17,6 +17,10 @@ const routes: Routes = [
   {
     path: 'comments',
     loadChildren: () => import('./modals/comments/comments.module').then( m => m.CommentsPageModule)
+  },
+  {
+    path: 'profile',
+    loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
   }
 ];
 @NgModule({

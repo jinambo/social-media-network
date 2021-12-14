@@ -17,6 +17,7 @@ module.exports = gql`
         token: String!
         email: String!
         username: String!
+        biography: String
         creationDate: String!
     }
 
@@ -48,7 +49,10 @@ module.exports = gql`
     type Query {
         getPosts: [Post]
         getPost(postId: ID!): Post
+        getUsersPosts(username: String!): [Post]
         getUsers: [User]
+        getUsersIterate(first: Int!): [User]
+        getUser(username: String!): User
     }
 
     type Mutation {

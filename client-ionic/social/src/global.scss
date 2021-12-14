@@ -37,3 +37,25 @@
 .transparent {
     background-color: transparent !important;
 }
+
+.post {
+    &__actions {
+        display: flex;
+        align-items: center;
+        margin-top: 1em;
+        font-size: 1.5em;
+    }
+
+    &__likes, &__comments {
+        display: flex;
+        align-items: center;
+
+        span {
+            font-size: 0.75em;
+        }
+    }
+
+    &__comments {
+        margin-left: 0.5em;
+    }
+}
