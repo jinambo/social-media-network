@@ -7,6 +7,7 @@ import { USER_ID, USER_NAME } from '../consts';
 import { User, UserService } from '../services/user.service';
 import { Post, PostService } from '../services/post.service';
 import { ActivatedRoute, Params } from '@angular/router';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -21,9 +22,13 @@ export class ProfilePage implements OnInit {
     id: '',
     email: '',
     username: '',
+    pictureUrl: '',
     biography: '',
     creationDate: ''
   };
+
+  // Current user
+  currentUser: string;
 
   // User's posts
   userPosts: Post[];
@@ -31,41 +36,39 @@ export class ProfilePage implements OnInit {
   // Users you may know array
   users: User[] = [];
 
-  currentUserName: string;
-
   constructor(private userService: UserService,
     private postService: PostService,
     private route: ActivatedRoute) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
-      this.currentUserName = params.username; 
+      this.generateContent(params.username);
+      this.currentUser = params.username;
     });
-
-    this.generateContent();
   }
 
-  showProfile(username: string) {
-    this.currentUserName = username;
-
-    this.generateContent();
-  }
-
-  generateContent() {
+  generateContent(username: string): void {
     // Get single user data - profile
-    this.userService.getUser(this.currentUserName)
+    this.userService.getUser(username)
     .subscribe(({ data }) => {
       this.userData = data.getUser;
     });
 
     // Get users
-    this.userService.getUsersLimited(5)
+    this.userService.getUsersLimited(8)
     .subscribe(({ data }) => {
-      this.users = data.getUsersIterate;
+      let users: User[] = [...data.getUsersIterate];
+
+      // Filter current viewed user's profile and logged user's profile and shuffle the array
+      users = users.filter(
+        user => user.username !== this.currentUser && user.username !== localStorage.getItem(USER_NAME)
+      ).sort( () => Math.random() - 0.5);
+      
+      this.users = users;
     });
 
     // Get user's posts
-    this.postService.getUsersPosts(this.currentUserName)
+    this.postService.getUsersPosts(username)
     .subscribe(({ data }) => {
       this.userPosts = data.getUsersPosts;
     });

@@ -1,8 +1,19 @@
 const gql = require('graphql-tag')
 
 module.exports = gql`
+    scalar Upload
+
+    type File {
+        _id: ID!
+        path: String!
+        filename: String!
+        mimetype: String!
+        encoding: String!
+    }
+
     type Post {
         id: ID!
+        images: [Image]
         content: String!
         username: String!
         creationDate: String!
@@ -17,6 +28,7 @@ module.exports = gql`
         token: String!
         email: String!
         username: String!
+        pictureUrl: String
         biography: String
         creationDate: String!
     }
@@ -34,6 +46,17 @@ module.exports = gql`
         creationDate: String!
     }
 
+    type Image {
+        id: ID!
+        url: String!
+        alt: String
+    }
+
+    input ImageInput {
+        url: String!
+        alt: String
+    }
+
     input RegisterInput {
         username: String!
         email: String!
@@ -47,6 +70,7 @@ module.exports = gql`
     }
 
     type Query {
+        uploads: [File]
         getPosts: [Post]
         getPost(postId: ID!): Post
         getUsersPosts(username: String!): [Post]
@@ -56,9 +80,11 @@ module.exports = gql`
     }
 
     type Mutation {
+        upload(file: Upload!): File!
+        editUser(userId: ID!, biography: String, pictureUrl: String): User!
         register(registerInput: RegisterInput): User!
         login(loginInput: LoginInput): User!
-        createPost(content: String!): Post!
+        createPost(images: [ImageInput], content: String!): Post!
         removePost(postId: ID!): String!
         createComment(postId: ID!, content: String!): Post!
         removeComment(postId: ID!, commentId: ID!): Post!

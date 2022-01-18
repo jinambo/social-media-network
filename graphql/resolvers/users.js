@@ -1,3 +1,5 @@
+const { checkAuth } = require('../../util/auth')
+
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { UserInputError } = require('apollo-server')
@@ -46,9 +48,33 @@ module.exports = {
     Query: {
         getUsers,
         getUsersIterate,
-        getUser
-    },
+        getUser,
+    },    
     Mutation: {
+        async upload(obj, args, context, info) {
+            const file = await args.file;
+            console.log(file);
+        },
+        
+        async editUser(_, { userId, biography, pictureUrl }, context) {
+            // Check logged user's token
+            const user = checkAuth(context)
+
+            // Profile that we wanna edit
+            const profile = await User.findById(userId)
+
+            // Is editing profile logged user's profile
+            if (profile.username === user.username) {
+                profile.biography = biography !== null ? biography : profile.biography
+                profile.pictureUrl = pictureUrl !== null ? pictureUrl : profile.pictureUrl
+            }
+
+            // Save the changes
+            await profile.save()
+
+            return profile
+        },
+
         async register(_, { registerInput: { username, email, password, confirmPassword, biography } }) {
             // Validate data
             const { valid, errors } = registerValidate(username, email, password, confirmPassword)

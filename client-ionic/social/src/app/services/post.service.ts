@@ -11,6 +11,10 @@ const POST_QUERY = gql`
       id
       username
       creationDate
+      images {
+        url
+        alt
+      }
       content
       comments {
         id
@@ -34,6 +38,10 @@ const USERS_POSTS_QUERY = gql`
       id
       username
       creationDate
+      images {
+        url
+        alt
+      }
       content
       comments {
         id
@@ -52,9 +60,13 @@ const USERS_POSTS_QUERY = gql`
 
 // Create Post Mutation
 const CREATE_POST_MUTATION = gql`
-  mutation CreatePost($content: String!) {
-    createPost(content: $content) {
+  mutation CreatePost($images: [ImageInput], $content: String!) {
+    createPost(images: $images, content: $content) {
       id
+      images {
+        url
+        alt
+      }
       content
       username
       creationDate
@@ -97,6 +109,7 @@ const REMOVE_COMMENT_MUTATION = gql`
     removeComment(postId: $postId, commentId: $commentId) {
       id
       comments {
+        username
         content
       }
     }
@@ -110,10 +123,22 @@ export interface Comment {
   content: string;
 }
 
+export interface ImageInput {
+  url: string;
+  alt: string;
+}
+
+export interface Image {
+  id: string;
+  url: string;
+  alt: string;
+}
+
 export interface Post {
   id: string;
   username: string;
   creationDate: string;
+  images: Image [];
   content: string;
   comments: Comment [];
   likes: any [];
@@ -150,11 +175,12 @@ export class PostService {
     .valueChanges
   }
 
-  createPost(content): Observable<any> {
+  createPost(images: ImageInput[], content: string): Observable<any> {
     return this.apollo.mutate({
       mutation: CREATE_POST_MUTATION,
       variables: {
-        content: content
+        images,
+        content
       }
     })
   }

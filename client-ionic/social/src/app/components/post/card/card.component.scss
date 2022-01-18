@@ -1,0 +1,12 @@
+.post {
+    &__slide {
+        position: relative;
+        max-height: 220px;
+        overflow: hidden;
+
+        img {
+            //width: auto;
+            //min-height: 100%;
+        }
+    }
+}

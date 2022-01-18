@@ -2,7 +2,9 @@
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-button>
-        <img class="logo-icon" src="assets/icon/pie.png" alt="">
+        <a [routerLink]="'/tabs/tab1'">
+          <img class="logo-icon" src="assets/icon/pie.png" alt="">
+        </a>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -36,11 +38,6 @@
           <ion-item>
             <ion-label position="floating">Confirm password</ion-label>
             <ion-input type="password" [(ngModel)]="confirmPassword"></ion-input>
-          </ion-item>
-
-          <ion-item>
-            <ion-label position="floating">Biography <small>(not required)</small></ion-label>
-            <ion-input type="text" [(ngModel)]="biography"></ion-input>
           </ion-item>
 
           <ion-button

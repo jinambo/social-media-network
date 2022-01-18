@@ -23,27 +23,26 @@ export class Tab1Page implements OnInit, OnDestroy {
   loading: boolean;     // is the component loading
   posts: Post[] = [];   // posts
 
-  private querySubscription: Subscription;
-
   constructor(
-    public modalCtrl: ModalController,
+    public modalController: ModalController,
     public popoverController: PopoverController,
     private postService: PostService) {}
 
-  ngAfterContentInit() {
+  ngAfterContentInit(): void {
     console.log('dom changed');
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.postService.getPosts()
     .subscribe(({ data, loading }) => {
       this.loading = loading;
       this.posts = data.getPosts;
+      console.log(data.getPosts)
     });
   }
 
-  ngOnDestroy() {
-    this.querySubscription.unsubscribe();
+  ngOnDestroy(): void {
+    // this.querySubscription.unsubscribe();
   }
 
   /*removeClient(postID) {

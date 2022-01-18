@@ -23,7 +23,7 @@ const getPost = async (_, { postId }) => {
 
 const getUsersPosts = async(_, { username }) => {
     try {
-        const posts = await Post.find()
+        const posts = await Post.find().sort({ creationDate: -1 }) // -1 -> DESC
 
         if (posts) {
             return posts.filter(post => post.username === username);
@@ -34,12 +34,13 @@ const getUsersPosts = async(_, { username }) => {
     }   
 }
 
-const createPost = async (_, { content }, context) => {
+const createPost = async (_, { images, content }, context) => {
     const user = checkAuth(context)
 
-    console.log(user)
+    console.log(images)
 
     const newPost = new Post({
+        images: images,
         content: content,
         user: user.id,
         username: user.username,
@@ -100,8 +101,10 @@ const removeComment = async (_, { postId, commentId }, context) => {
 
         if (comment[0].username === user.username) {
             post.comments = post.comments.filter(c => {
-                return c.id !== comment.id
+                return c.id !== commentId
             })
+
+            console.log(post.comments)
 
             await post.save()
             return post

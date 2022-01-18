@@ -18,6 +18,7 @@ export class CardComponent implements OnInit {
   @Input() username;
   @Input() postId;
   @Input() postCreationDate;
+  @Input() postImages;
   @Input() postContent;
   @Input() postLikes;
   @Input() postLikesCount;
@@ -37,26 +38,32 @@ export class CardComponent implements OnInit {
     return `${date.getDay() + 1}. ${date.getMonth() + 1}. ${date.getFullYear()}`
   }
 
-  async initCommentsModal(postName, postID, comments) {
+  // Comment modal
+  async initCommentsModal(postName, postID, comments, commentsCount) {
     const modal = await this.modalCtrl.create({
       component: CommentsPage,
       componentProps: {
-        'postName': postName,
-        'postID': postID,
-        'comments': comments
+        postName,
+        postID,
+        comments,
+        commentsCount
       }
     });
 
     modal.onDidDismiss().then((modalDataResponse) => {
       if (modalDataResponse !== null) {
         this.modalDataResponse = modalDataResponse.data;
-        console.log('Modal Sent Data : '+ modalDataResponse.data);
+        //console.log(modalDataResponse.data);
+        // Re-set comments and it's count according to response
+        this.postComments = modalDataResponse.data.comments;
+        this.postCommentsCount = modalDataResponse.data.commentsCount;
       }
     });
 
     return await modal.present();
   }
 
+  // Post settings popover
   async presentPopover(ev: any, postID: String) {
     const popover = await this.popoverController.create({
       component: SettingsComponent,

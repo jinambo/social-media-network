@@ -1,17 +1,25 @@
-<ion-header [translucent]="true">
-  <ion-toolbar color="primary">
+<ion-header [translucent]="true" class="navbar">
+  <ion-toolbar color="light">
     <ion-buttons slot="start">
       <ion-button>
         <a [routerLink]="'/tabs/tab1'">
-          <img class="logo-icon" src="assets/icon/pie.png" alt="">
+          <img class="logo-icon" src="assets/icon/pie-logo.png" alt="">
         </a>
       </ion-button>
     </ion-buttons>
 
     <ion-buttons slot="end">
-      <ion-tab-button class="person__button" tab="profile/{{username}}" style="background-color: transparent !important; color: #fff !important;">
-        <ion-icon class="person__icon" name="person"></ion-icon>
-      </ion-tab-button>
+      <ion-tab-button *ngIf="user.username !== ''" tab="profile/{{user.username}}"
+        style="width: 2.75em; height: 2.75em; border-radius: 50%; background-position: center; background-size: cover;"
+        [style.background-image]="user.pictureUrl !== null ? 'url(' + user.pictureUrl + ')' : 'url(https://www.oseyo.co.uk/wp-content/uploads/2020/05/empty-profile-picture-png-2-2.png)'" 
+      ></ion-tab-button>
+      
+      <ion-button *ngIf="user.username === ''"  color="primary">
+        <a [routerLink]="'/login'">
+          Login
+        </a>
+      </ion-button>
+
     </ion-buttons>
 
     <ion-title>{{ title }}</ion-title>

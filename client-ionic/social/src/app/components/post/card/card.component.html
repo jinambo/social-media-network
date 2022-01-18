@@ -1,4 +1,13 @@
-<ion-card class="post">
+<ion-card class="card-shadow post">
+
+  <ion-slides pager>
+    <ion-slide *ngFor="let image of postImages">
+      <div class="post__slide">
+        <img src="{{ image.url }}" alt="{{ image.alt }}" />
+      </div>
+    </ion-slide>
+  </ion-slides>
+
   <ion-card-header>
     <ion-toolbar>
       <ion-card-subtitle>
@@ -23,7 +32,7 @@
 
       <div
         class="post__comments"
-        (click)="initCommentsModal('Post by ' + username, postId, postComments)"
+        (click)="initCommentsModal('Post by ' + username, postId, postComments, postCommentsCount)"
       >
         <ion-icon name="chatbubbles-outline"></ion-icon>
         <span>{{ postCommentsCount }}</span>

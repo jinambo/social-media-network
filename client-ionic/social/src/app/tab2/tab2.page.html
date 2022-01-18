@@ -1,9 +1,40 @@
 <app-header [title]="'New Post'"></app-header>
 
-<ion-content [fullscreen]="true">
-  <ion-item class="comment__input">
-    <ion-label position="floating">New Post</ion-label>
+<ion-content class="ion-padding">
+
+  <h2>Pictures</h2>
+  <div class="image-wrap">
+    <div class="image-form">
+      <ion-item>
+        <ion-label position="floating">Insert URL</ion-label>
+        <ion-input [(ngModel)]="newPicUrl" aria-placeholder="Image url"></ion-input>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label position="floating">Insert alt</ion-label>
+        <ion-input [(ngModel)]="newPicAlt" aria-placeholder="Image alt"></ion-input>
+      </ion-item>
+    </div>
+
+    <ion-button color="primary" (click)="addPicture(newPicUrl, newPicAlt)">
+      <ion-icon class="image-wrap__icon" name="add-circle"></ion-icon> add
+    </ion-button>
+  </div>
+
+  <div class="image-store">
+    <div *ngFor="let picture of pictures" class="image-store__item"
+      [style.background-image]="'url(' + picture.url + ')'" 
+    >
+      <ion-icon (click)="removePicture(picture.url)" class="image-store__delete" name="trash"></ion-icon>
+    </div>
+  </div>
+
+  <h2>Content</h2>
+  <ion-item>
+    <ion-label position="floating">What's on your mind?</ion-label>
     <ion-textarea [(ngModel)]="newPost"></ion-textarea>
   </ion-item>
-  <ion-button (click)="createPost(newPost)">Create Post</ion-button>
+
+  
+  <ion-button class="post-submit" (click)="createPost(pictures, newPost)" expand="block">Create Post</ion-button>
 </ion-content>

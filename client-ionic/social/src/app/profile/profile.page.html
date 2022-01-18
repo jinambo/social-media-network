@@ -2,17 +2,18 @@
 
 <ion-content [fullscreen]="true">
 
-  <ion-card>
+  <ion-card class="card-shadow">
     <ion-card-header class="profile">
-      <ion-icon name="person"></ion-icon>
-      <ion-toolbar class="ion-margin-start">
-        <ion-card-subtitle>{{ userData.username }}</ion-card-subtitle>
-      </ion-toolbar>
-    </ion-card-header>
+      <div class="profile__head">
+        <div class="circle profile__picture" [style.background-image]="userData.pictureUrl !== null ? 'url(' + userData.pictureUrl + ')' : 'url(https://www.oseyo.co.uk/wp-content/uploads/2020/05/empty-profile-picture-png-2-2.png)' "></div>
+      </div>
 
-    <ion-card-content>
-      <p>{{ userData.biography }}</p>
-    </ion-card-content>
+      <div class="profile__bio">
+        <ion-card-title>{{ userData.username }}</ion-card-title>
+        <p>{{ userData.biography }}</p>
+      </div>
+      
+    </ion-card-header>
   </ion-card>
 
   <ion-grid class="ion-margin">
@@ -23,10 +24,15 @@
       <div class="user__slider">
         <div class="user__scroll">
 
-          <a (click)="showProfile(user.username)" class="user__item" *ngFor="let user of users">
+          <a [routerLink]="['/tabs/profile', user.username ]"
+            class="user__item"
+            *ngFor="let user of users"
+          >
+            <div class="circle user__picture" [style.background-image]="user.pictureUrl !== null ? 'url(' + user.pictureUrl + ')' : 'url(https://www.oseyo.co.uk/wp-content/uploads/2020/05/empty-profile-picture-png-2-2.png)' "></div>
             <h3 class="user__name">{{ user.username }}</h3>
             <p class="user__description">{{ user.biography }}</p>
           </a>
+
 
         </div>
       </div>
@@ -39,6 +45,7 @@
     [username]="post.username"
     [postId]="post.id"
     [postCreationDate]="post.creationDate"
+    [postImages]="post.images"
     [postContent]="post.content"
     [postLikes]="post.likes"
     [postLikesCount]="post.likesCount"

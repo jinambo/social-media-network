@@ -3,6 +3,18 @@ import { ApolloQueryResult } from '@apollo/client';
 import { Apollo, gql } from 'apollo-angular';
 import { Observable } from 'rxjs';
 
+// Edit User Mutation
+const EDIT_USER_MUTATION = gql`
+  mutation EditUser($userId: ID!, $biography: String, $pictureUrl: String) {
+    editUser(userId: $userId, biography: $biography, pictureUrl: $pictureUrl) {
+      id
+      username
+      biography
+      pictureUrl
+    }
+  }
+`
+
 // All Users Query
 const USERS_QUERY = gql`
   query GetUsers {
@@ -10,6 +22,7 @@ const USERS_QUERY = gql`
       id
       email
       username
+      pictureUrl
       biography
       creationDate
     }
@@ -23,6 +36,7 @@ const USERS_LIMITED_QUERY = gql`
       id
       email
       username
+      pictureUrl
       biography
       creationDate
     }
@@ -36,6 +50,7 @@ const USER_QUERY = gql`
       id
       email
       username
+      pictureUrl
       biography
       creationDate
     }
@@ -47,6 +62,7 @@ export interface User {
   id: string,
   email: string,
   username: string,
+  pictureUrl: string,
   biography: string,
   creationDate: string
 }
@@ -62,7 +78,18 @@ export class UserService {
 
   constructor(private apollo: Apollo) { }
 
-  getUser(username): Observable<any> {
+  editUser(userId: string, biography: string, pictureUrl: string): Observable<any> {
+    return this.apollo.mutate({
+      mutation: EDIT_USER_MUTATION,
+      variables: {
+        userId,
+        biography,
+        pictureUrl
+      }
+    })
+  }
+
+  getUser(username: string): Observable<any> {
     return this.apollo.watchQuery<any>({
       query: USER_QUERY,
       variables: {

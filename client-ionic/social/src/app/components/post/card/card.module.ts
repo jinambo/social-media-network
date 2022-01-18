@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterLink, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
@@ -8,7 +9,8 @@ import { CardComponent } from './card.component';
   imports: [
     LikeModule,
     IonicModule,
-    RouterModule
+    RouterModule,
+    CommonModule
   ],
   declarations: [
     CardComponent
