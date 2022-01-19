@@ -8,7 +8,7 @@ import { Post, PostService } from 'src/app/services/post.service';
   styleUrls: ['./settings.component.scss'],
 })
 export class SettingsComponent implements OnInit {
-  @Input() postId;
+  @Input() postId: string;
   @Input() posts: Post[];
   @Output() getPostsChange = new EventEmitter<Post[]>();
 
@@ -17,27 +17,28 @@ export class SettingsComponent implements OnInit {
     private postService: PostService
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     console.log(this.postId)
   }
 
   // Client side handle
-  removePostClient() {
+  removePostClient(): void {
     this.posts = this.posts.filter(post => post.id !== this.postId)
     this.getPostsChange.emit(this.posts)
   }
 
   // Send request - server side handle
-  removePost() {
+  removePost(): void {
     this.postService.removePost(this.postId)
     .subscribe(({ data }) => {
       console.log('post removed', data);
+      document.location.href = '/tabs/tab1';
     }, (error) => {      
       console.log('there was an error sending the query', error);
     });
   }
 
-  async close() {
+  async close(): Promise<any> {
     await this.popoverController.dismiss();
   }
 

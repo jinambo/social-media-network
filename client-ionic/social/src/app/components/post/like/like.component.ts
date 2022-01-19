@@ -1,5 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 
+// Capacitor dependencies
+import { Storage } from '@capacitor/storage';
+
 // Consts
 import { USER_NAME } from 'src/app/consts';
 
@@ -22,14 +25,16 @@ export class LikeComponent implements OnInit {
   constructor(
     private postService: PostService) { }
 
-  ngOnInit() {
-    if (this.likes.find(like => like.username === localStorage.getItem(USER_NAME))) {
+  async ngOnInit(): Promise<void> {
+    const { value } = await Storage.get({ key: USER_NAME})
+
+    if (this.likes.find(like => like.username === value)) {
       this.liked = true;
     }
   }
 
 
-  toggleLike(postID) {
+  toggleLike(postID: string): void {
     // Client side handle
     this.liked = !this.liked;
     this.liked ? this.likesCount++ : this.likesCount--;

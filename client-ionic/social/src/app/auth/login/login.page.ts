@@ -24,7 +24,11 @@ export class LoginPage implements OnInit {
     this.router = r;
   }
 
-  loginUser() {
+  ngOnInit(): void {
+
+  }
+
+  loginUser(): void {
     this.authService.loginUser(this.username, this.password)
     .subscribe(({ data }) => {
       console.log('got data', data);
@@ -35,10 +39,6 @@ export class LoginPage implements OnInit {
       this.errorMessage = error;
       console.log('there was an error sending the query', error);
     });
-  }
-
-  ngOnInit() {
-
   }
 
 }

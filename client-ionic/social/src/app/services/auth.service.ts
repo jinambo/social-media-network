@@ -1,7 +1,14 @@
+// Ionic dependencies
 import { Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
+
+// Capacitor dependencies
+import { Storage } from '@capacitor/storage';
+
+// RXJS async
 import { Observable, Subject } from 'rxjs';
 
+// Storage consts
 import {AUTH_TOKEN, USER_DATA, USER_ID, USER_NAME} from '../consts';
 import { User, UserService } from './user.service';
 
@@ -30,6 +37,7 @@ const REGISTER_MUTATION = gql`
   }
 `;
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -41,15 +49,28 @@ export class AuthService {
 
   }
 
+  async logout(): Promise<void> {
+    await Storage.clear();
+    this.username = null;
+  }
+
   // Get loaded user in other components using subscription
   getLoadedUser(): Observable<any> {
     var subject = new Subject<any>();
 
     if (this.username !== null) {
       this.userService.getUser(this.username)
-      .subscribe(({ data }) => {
-        subject.next(data.getUser);
-        localStorage.setItem(USER_DATA, JSON.stringify(data.getUser));
+      .subscribe(async ({ data }) => {
+        // Save to capacitor storage
+        
+        await Storage.set({
+          key: USER_DATA,
+          value: JSON.stringify(data.getUser),
+        });
+        
+
+        await subject.next(data.getUser);
+
       }, (error) => {      
         console.log('There was an error sending the query', error);
       });
@@ -58,15 +79,33 @@ export class AuthService {
     return subject.asObservable();
   }
 
-  saveUserData(data: any, type: string): void {
-    localStorage.clear();
-
+  async saveUserData(data: any, type: string): Promise<void> {
     this.username = type === "log" ? data.login.username : data.register.username;
 
+    //localStorage.clear();
+    await Storage.clear();
+
     // Store user's indentifiers
-    localStorage.setItem(AUTH_TOKEN, type === "log" ? data.login.token : data.register.token);
-    localStorage.setItem(USER_ID, type === "log" ? data.login.id : data.register.id);
-    localStorage.setItem(USER_NAME, type === "log" ? data.login.username : data.register.username);
+    
+    await Storage.set({
+      key: AUTH_TOKEN,
+      value: type === "log" ? data.login.token : data.register.token,
+    });
+
+    await Storage.set({
+      key: USER_ID,
+      value: type === "log" ? data.login.id : data.register.id,
+    });
+
+    await Storage.set({
+      key: USER_NAME,
+      value: type === "log" ? data.login.username : data.register.username,
+    });
+    
+
+    //localStorage.setItem(AUTH_TOKEN, type === "log" ? data.login.token : data.register.token);
+    //localStorage.setItem(USER_ID, type === "log" ? data.login.id : data.register.id);
+    //localStorage.setItem(USER_NAME, type === "log" ? data.login.username : data.register.username);
   }
 
   loginUser(username, password): Observable<any> {

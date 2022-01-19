@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+// Capacitor dependencies
+import { Storage } from '@capacitor/storage';
+
 import { ApolloLink, InMemoryCache} from '@apollo/client/core';
 
 import {HttpClientModule, HttpHeaders} from '@angular/common/http';
@@ -16,7 +19,7 @@ import { AUTH_TOKEN } from './consts';
 import { setContext } from '@apollo/client/link/context';
 
 
-const uri = 'http://192.168.1.36:5000/graphql';
+const uri = 'http://localhost:5000/graphql';
 
 export function createApollo(httpLink: HttpLink) {
   const basic = setContext((operation, context) => ({
@@ -25,8 +28,9 @@ export function createApollo(httpLink: HttpLink) {
     }
   }));
 
-  const auth = setContext((operation, context) => {
-    const token = localStorage.getItem(AUTH_TOKEN);
+  const auth = setContext(async (operation, context) => {
+    const { value } = await Storage.get({ key: AUTH_TOKEN});
+    const token = value;
 
     if (token === null) {
       return {};

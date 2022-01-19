@@ -1,9 +1,9 @@
 <ion-header>
-  <ion-toolbar color="primary">
+  <ion-toolbar color="warning">
     <ion-buttons slot="start">
       <ion-button>
         <a [routerLink]="'/tabs/tab1'">
-          <img class="logo-icon" src="assets/icon/pie.png" alt="">
+          <img class="logo-icon" src="assets/icon/pie-logo.png" alt="">
         </a>
       </ion-button>
     </ion-buttons>
@@ -41,6 +41,7 @@
           </ion-item>
 
           <ion-button
+            color="warning"
             style="margin-top: 2em;"
             expand="block"
             (click)="registerUser()"

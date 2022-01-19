@@ -16,7 +16,7 @@
       </ion-item>
     </div>
 
-    <ion-button color="primary" (click)="addPicture(newPicUrl, newPicAlt)">
+    <ion-button color="warning" (click)="addPicture(newPicUrl, newPicAlt)">
       <ion-icon class="image-wrap__icon" name="add-circle"></ion-icon> add
     </ion-button>
   </div>
@@ -36,5 +36,5 @@
   </ion-item>
 
   
-  <ion-button class="post-submit" (click)="createPost(pictures, newPost)" expand="block">Create Post</ion-button>
+  <ion-button color="warning" class="post-submit" (click)="createPost(pictures, newPost)" expand="block">Create Post</ion-button>
 </ion-content>

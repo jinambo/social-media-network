@@ -2,17 +2,25 @@
 
 <ion-content [fullscreen]="true">
 
-    <app-card *ngFor="let post of posts"
-      [posts]="posts"
-      [username]="post.username"
-      [postId]="post.id"
-      [postCreationDate]="post.creationDate"
-      [postImages]="post.images"
-      [postContent]="post.content"
-      [postLikes]="post.likes"
-      [postLikesCount]="post.likesCount"
-      [postComments]="post.comments"
-      [postCommentsCount]="post.commentsCount"
-    ></app-card>
+  <ion-refresher slot ="fixed" disabled="false" (ionRefresh)="doRefresh($event)" pullFactor="0.5" pullMin="100" pullMax="200">  
+    <ion-refresher-content  
+    pullingIcon="arrow-down"  
+    pullingText="Pull to refresh"  
+    refreshingSpinner="bubbles"  
+    refreshingText="Refreshing....."></ion-refresher-content>   
+  </ion-refresher>  
+
+  <app-card *ngFor="let post of posts"
+  [posts]="posts"
+  [username]="post.username"
+  [postId]="post.id"
+  [postCreationDate]="post.creationDate"
+  [postImages]="post.images"
+  [postContent]="post.content"
+  [postLikes]="post.likes"
+  [postLikesCount]="post.likesCount"
+  [postComments]="post.comments"
+  [postCommentsCount]="post.commentsCount"
+></app-card>
 
 </ion-content>

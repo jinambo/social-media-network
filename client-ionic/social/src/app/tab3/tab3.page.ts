@@ -1,6 +1,14 @@
+// Angular dependencies
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+
+// Capacitor dependencies
+import { Storage } from '@capacitor/storage';
+
+// Storage consts
 import { AUTH_TOKEN, USER_DATA, USER_ID, USER_NAME } from '../consts';
+
+// Services
 import { AuthService } from '../services/auth.service';
 import { User, UserService } from '../services/user.service';
 
@@ -47,36 +55,38 @@ export class Tab3Page {
       })
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    const { value } = await Storage.get({ key: USER_DATA })
+    
     // If user was not loaded from auth service, load from local storage (user realoaded page)
-    if (localStorage.getItem(USER_DATA)) {
-      this.user = JSON.parse(localStorage.getItem(USER_DATA));
+    if (value !== null) {
+      this.user = JSON.parse(value);
+
       this.bio = this.user.biography;
       this.picUrl = this.user.pictureUrl;
     } 
-    console.log(this.user)
   }
 
-  onSubmit() : void {
-    console.log('new user info: ' + this.bio + ', ' + this.picUrl)
+  // Edit profile 
+  async onSubmit() : Promise<void> {
+    // Get UID
+    const { value } = await Storage.get({ key: USER_ID })
 
-    this.userService.editUser(localStorage.getItem('user-id'), this.bio, this.picUrl)
+    this.userService.editUser(value, this.bio, this.picUrl)
     .subscribe(({ data }) => {
       console.log('Profile updated', data);
+      this.router.navigate([`/tabs/profile/${ this.user.username }`]);
+
     }, (error) => {      
       console.log('There was an error sending the query', error);
     });
   }
 
-  logout(): void {
-    localStorage.clear();
+  // Logout user
+  async logout(): Promise<void> {
+    this.authService.logout();
 
-    // Phone wasn't clearing cache.. 
-    localStorage.setItem(USER_NAME, '');
-    localStorage.setItem(USER_ID, '');
-    localStorage.setItem(USER_DATA, '');
-    localStorage.setItem(AUTH_TOKEN, '');
-
+    // Route login page
     this.router.navigate(['/', 'login']); 
   }
 

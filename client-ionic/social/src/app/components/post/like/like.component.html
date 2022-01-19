@@ -2,6 +2,6 @@
   class="post__likes"
   (click)="toggleLike(postID)"
 >
-  <ion-icon [name]="liked ? 'heart' : 'heart-outline'"></ion-icon>
+  <ion-icon [color]="(liked) ? 'warning' : 'dark'" [name]="liked ? 'heart' : 'heart-outline'"></ion-icon>
   <span>{{ likesCount }}</span>
 </div>

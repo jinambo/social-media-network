@@ -1,4 +1,8 @@
+// Angular dependencies
 import { Component, OnInit } from '@angular/core';
+
+// Capacitor dependencies
+import { Storage } from '@capacitor/storage';
 
 // Consts
 import { USER_ID, USER_NAME } from '../consts';
@@ -7,7 +11,6 @@ import { USER_ID, USER_NAME } from '../consts';
 import { User, UserService } from '../services/user.service';
 import { Post, PostService } from '../services/post.service';
 import { ActivatedRoute, Params } from '@angular/router';
-import { Observable } from 'rxjs';
 
 
 @Component({
@@ -47,6 +50,7 @@ export class ProfilePage implements OnInit {
     });
   }
 
+  // Get user data from DB
   generateContent(username: string): void {
     // Get single user data - profile
     this.userService.getUser(username)
@@ -56,14 +60,16 @@ export class ProfilePage implements OnInit {
 
     // Get users
     this.userService.getUsersLimited(8)
-    .subscribe(({ data }) => {
+    .subscribe(async ({ data }) => {
       let users: User[] = [...data.getUsersIterate];
 
       // Filter current viewed user's profile and logged user's profile and shuffle the array
+      const { value } = await Storage.get({ key: USER_NAME });
+
       users = users.filter(
-        user => user.username !== this.currentUser && user.username !== localStorage.getItem(USER_NAME)
+        user => user.username !== this.currentUser && user.username !== value
       ).sort( () => Math.random() - 0.5);
-      
+
       this.users = users;
     });
 

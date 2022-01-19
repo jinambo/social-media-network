@@ -1,7 +1,9 @@
+// Angular dependencies
 import { Component } from '@angular/core';
-import { ImageInput, PostService } from '../services/post.service';
+import { Router } from '@angular/router';
 
-
+// Servicess and models
+import { ImageInput, Post, PostService } from '../services/post.service';
 
 @Component({
   selector: 'app-tab2',
@@ -15,7 +17,7 @@ export class Tab2Page {
 
   pictures: ImageInput[] = [];
 
-  constructor(private postService: PostService) {
+  constructor(private postService: PostService, private router: Router) {
 
   }
 
@@ -30,21 +32,22 @@ export class Tab2Page {
       this.pictures.push(picture)  
     }
 
+    // Reset picture inputs
     this.newPicUrl = '';
     this.newPicAlt = '';
-
-    console.log(this.pictures)
   }
 
+  // Remove picture
   removePicture(url: string): void {
     this.pictures = this.pictures.filter(pic => pic.url !== url)
-    console.log(this.pictures)
   }
 
-  createPost(images: ImageInput[], content: string): void {
+  // Create post
+  async createPost(images: ImageInput[], content: string): Promise<void> {
     this.postService.createPost(images, content)
-    .subscribe(({ data }) => {
-      console.log('post created', data);
+    .subscribe(async ({ data }) => {
+      // redirect to feed page
+      document.location.href = '/tabs/tab1';
     }, (error) => {      
       console.log('there was an error sending the query', error);
     });

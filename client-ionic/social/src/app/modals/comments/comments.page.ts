@@ -1,6 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
+// Capacitor dependencies
+import { Storage } from '@capacitor/storage';
+
 // Services
 import { PostService } from 'src/app/services/post.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -30,11 +33,12 @@ export class CommentsPage implements OnInit {
     private authService: AuthService
   ) { }
 
-  ngOnInit() {
-    this.currentUser = localStorage.getItem(USER_NAME)
+  async ngOnInit(): Promise<void> {
+    const { value } = await Storage.get({ key: USER_NAME })
+    this.currentUser = value;
   }
 
-  async close() {
+  async close(): Promise<any> {
     // Return updated data on close
     const modalResponse: Object = {
       comments: this.comments,
@@ -44,7 +48,7 @@ export class CommentsPage implements OnInit {
     await this.modalCtr.dismiss(modalResponse);
   }
 
-  createComment(postID) {
+  createComment(postID: void): void {
     if (this.newComment !== '' || this.newComment != null) {
       this.postService.createComment(postID, this.newComment)
       .subscribe(({ data }) => {
@@ -60,7 +64,7 @@ export class CommentsPage implements OnInit {
     }
   }
 
-  removeComment(postID, commentID) {
+  removeComment(postID: string, commentID: string): void {
     this.postService.removeComment(postID, commentID)
     .subscribe(({ data }) => {
       console.log('comment removed', data);

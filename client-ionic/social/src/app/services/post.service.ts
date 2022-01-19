@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApolloQueryResult } from '@apollo/client';
 import { Apollo, gql } from 'apollo-angular';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 
 // Post Query
@@ -63,13 +63,22 @@ const CREATE_POST_MUTATION = gql`
   mutation CreatePost($images: [ImageInput], $content: String!) {
     createPost(images: $images, content: $content) {
       id
+      username
+      creationDate
       images {
         url
         alt
       }
       content
-      username
-      creationDate
+      comments {
+        id
+        username
+        content
+      }
+      likes {
+        id
+        username
+      }
       likesCount
       commentsCount
     }
@@ -138,10 +147,10 @@ export interface Post {
   id: string;
   username: string;
   creationDate: string;
-  images: Image [];
+  images: Image[];
   content: string;
-  comments: Comment [];
-  likes: any [];
+  comments: Comment[];
+  likes: any[];
   likesCount: number;
   commentsCount: number;
 }
@@ -158,8 +167,8 @@ export class PostService {
     private apollo: Apollo
   ) { }
 
-  getPosts(): Observable<ApolloQueryResult<PostResponse>> {
-    return this.apollo.watchQuery<PostResponse>({
+  getPosts(): Observable<any> {
+    return this.apollo.watchQuery<any>({
       query: POST_QUERY
     })
     .valueChanges

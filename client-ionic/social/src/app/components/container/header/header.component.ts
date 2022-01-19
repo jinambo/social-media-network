@@ -1,5 +1,13 @@
+// Angular dependencies
 import { Component, Input, OnInit } from '@angular/core';
+
+// Capacitor dependencies
+import { Storage } from '@capacitor/storage';
+
+// Storage consts
 import { USER_DATA, USER_NAME } from 'src/app/consts';
+
+// Services
 import { AuthService } from 'src/app/services/auth.service';
 import { User } from 'src/app/services/user.service';
 
@@ -21,19 +29,22 @@ export class HeaderComponent implements OnInit {
   };
 
   constructor(private authService: AuthService) {
-    console.log('fired')
     // Load user from auth service
-    authService.getLoadedUser().subscribe(r => {
-      this.user = r;
-    })
+    console.log('header get data from db')
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    this.authService.getLoadedUser().subscribe(r => {
+      this.user = r;
+      // console.log(r)
+    })
+
+    const { value } = await Storage.get({ key: USER_DATA });
+
     // If user was not loaded from auth service, load from local storage (user realoaded page)
-    if (localStorage.getItem(USER_DATA)) {
-      this.user = JSON.parse(localStorage.getItem(USER_DATA));
-    } 
-    console.log(this.user)
+    if (value !== null) {
+      this.user = JSON.parse(value);
+    }
   }
 
 }

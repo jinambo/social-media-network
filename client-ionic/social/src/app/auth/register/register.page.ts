@@ -24,7 +24,11 @@ export class RegisterPage implements OnInit {
       this.router = r;
   }
 
-  registerUser() {
+  ngOnInit(): void {
+
+  }
+
+  registerUser(): void {
     this.authService.registerUser(this.username, this.email, this.password, this.confirmPassword)
     .subscribe(({ data }) => {
       console.log('got data', data);
@@ -35,9 +39,5 @@ export class RegisterPage implements OnInit {
       this.errorMessage = error;
       console.log('there was an error sending the query', error);
     });
-  }
-
-  ngOnInit() {
-
   }
 }

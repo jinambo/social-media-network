@@ -1,16 +1,10 @@
+// Angular dependecies
 import { Component, OnInit, OnDestroy  } from '@angular/core';
-import { Subscription } from 'rxjs';
-
-import { CommentsPage } from '../modals/comments/comments.page';
 import { ModalController } from '@ionic/angular';
 import { PopoverController } from '@ionic/angular';
-import { SettingsComponent } from '../components/post/settings/settings.component';
 
-// Services
-import { PostService } from '../services/post.service';
-
-// Models
-import { Post } from '../services/post.service';
+// Services and models
+import { Post, PostService } from '../services/post.service';
 
 @Component({
   selector: 'app-tab1',
@@ -19,34 +13,31 @@ import { Post } from '../services/post.service';
 })
 export class Tab1Page implements OnInit, OnDestroy {
   modalDataResponse: any;
-
-  loading: boolean;     // is the component loading
-  posts: Post[] = [];   // posts
+  posts: Post[];     
 
   constructor(
     public modalController: ModalController,
     public popoverController: PopoverController,
-    private postService: PostService) {}
+    private postService: PostService) {
+    
+  }
 
-  ngAfterContentInit(): void {
-    console.log('dom changed');
+  async doRefresh(event) {
+    console.log('Begin async operation'); 
+    document.location.href = '/tabs/tab1';
+  
+    await event.target.complete();
   }
 
   ngOnInit(): void {
-    this.postService.getPosts()
-    .subscribe(({ data, loading }) => {
-      this.loading = loading;
-      this.posts = data.getPosts;
-      console.log(data.getPosts)
-    });
+     // Get posts from DB on load
+     this.postService.getPosts()
+     .subscribe(async ({ data, loading }) => {
+       this.posts = data.getPosts;
+     });
   }
 
   ngOnDestroy(): void {
     // this.querySubscription.unsubscribe();
   }
-
-  /*removeClient(postID) {
-    this.posts = this.posts.filter(post => post.id !== postID)
-  }*/
-
 }
