@@ -14,7 +14,7 @@
         [style.background-image]="user.pictureUrl !== null ? 'url(' + user.pictureUrl + ')' : 'url(https://www.oseyo.co.uk/wp-content/uploads/2020/05/empty-profile-picture-png-2-2.png)'" 
       ></ion-tab-button>
       
-      <ion-button *ngIf="user.username === ''"  color="primary">
+      <ion-button *ngIf="user.username === ''" color="primary">
         <a [routerLink]="'/login'">
           Login
         </a>
