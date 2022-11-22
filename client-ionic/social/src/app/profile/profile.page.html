@@ -16,7 +16,7 @@
     </ion-card-header>
   </ion-card>
 
-  <ion-grid class="ion-margin">
+  <ion-grid class="ion-margin" *ngIf="isOwnProfilePage">
     <ion-row>
       <p>Users you may know</p>
     </ion-row>
@@ -38,7 +38,6 @@
       </div>
     </ion-row>
   </ion-grid>
-
 
   <app-card *ngFor="let post of userPosts"
     [posts]="userPosts"
