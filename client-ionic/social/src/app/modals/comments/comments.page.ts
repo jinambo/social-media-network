@@ -57,6 +57,7 @@ export class CommentsPage implements OnInit {
         // Add comment to the local array
         this.comments = data.createComment.comments
         this.commentsCount++;
+        this.newComment = '';
         
       }, (error) => {      
         console.log('there was an error sending the query', error);

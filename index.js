@@ -12,7 +12,6 @@ const { MONGODB } = require('./config.js')
 const resolvers = require('./graphql/resolvers')
 const typeDefs = require('./graphql/typeDefs')
 
-
 async function startServer() {
     const server = new ApolloServer({
       typeDefs,
