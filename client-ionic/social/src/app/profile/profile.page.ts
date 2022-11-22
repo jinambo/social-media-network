@@ -39,6 +39,9 @@ export class ProfilePage implements OnInit {
   // Users you may know array
   users: User[] = [];
 
+  // Is user on their own profile page
+  isOwnProfilePage: boolean;
+
   constructor(private userService: UserService,
     private postService: PostService,
     private route: ActivatedRoute) { }
@@ -65,6 +68,8 @@ export class ProfilePage implements OnInit {
 
       // Filter current viewed user's profile and logged user's profile and shuffle the array
       const { value } = await Storage.get({ key: USER_NAME });
+
+      this.isOwnProfilePage = this.currentUser === value;
 
       users = users.filter(
         user => user.username !== this.currentUser && user.username !== value
